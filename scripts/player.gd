@@ -1,21 +1,24 @@
-# Player controller — top-down 2D movement + interaction + hiding
-extends CharacterBody2D
+# Player controller — top-down 3D movement + interaction + hiding
+extends CharacterBody3D
 
-@export var speed: float = 120.0
+@export var speed: float = 5.0
 
 var can_hide: bool = false
 var is_hidden: bool = false
 
 func _physics_process(_delta):
 	if is_hidden:
-		return  # Lock movement while hiding
+		return
 
-	var dir = Vector2(
+	var dir = Vector3(
 		Input.get_axis("ui_left", "ui_right"),
+		0,
 		Input.get_axis("ui_up", "ui_down")
 	).normalized()
 
 	velocity = dir * speed
+	if not is_on_floor():
+		velocity.y -= 9.8 * _delta
 	move_and_slide()
 
 func _unhandled_input(event):
@@ -27,11 +30,11 @@ func _unhandled_input(event):
 
 func _enter_hide():
 	is_hidden = true
-	modulate.a = 0.3
+	$MeshInstance3D.transparency = 0.7
 
 func _exit_hide():
 	is_hidden = false
-	modulate.a = 1.0
+	$MeshInstance3D.transparency = 0.0
 
 func die():
 	GameManager.lose()

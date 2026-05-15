@@ -1,22 +1,22 @@
 # SpiderAI — state machine: WANDER > CHASE > SEARCH
-extends CharacterBody2D
+extends CharacterBody3D
 
 enum State { WANDER, CHASE, SEARCH }
 
-@export var wander_speed: float = 60.0
-@export var chase_speed: float = 140.0
+@export var wander_speed: float = 3.0
+@export var chase_speed: float = 7.0
 @export var search_duration: float = 3.0
-@export var detection_radius: float = 180.0
-@export var catch_radius: float = 20.0
+@export var detection_radius: float = 8.0
+@export var catch_radius: float = 1.0
 
 var state: State = State.WANDER
-var player: Node2D = null
-var nav: NavigationAgent2D
-var wander_target: Vector2
+var player: Node3D = null
+var nav: NavigationAgent3D
+var wander_target: Vector3
 var search_timer: float = 0.0
 
 func _ready():
-	nav = $NavigationAgent2D
+	nav = $NavigationAgent3D
 	player = get_tree().get_first_node_in_group("player")
 	_pick_wander_target()
 
@@ -55,7 +55,10 @@ func _do_search(delta):
 
 func _move_toward_nav(spd: float):
 	var next = nav.get_next_path_position()
-	velocity = (next - global_position).normalized() * spd
+	var dir = (next - global_position)
+	dir.y = 0
+	dir = dir.normalized()
+	velocity = dir * spd
 	move_and_slide()
 
 func _can_see_player() -> bool:
@@ -64,7 +67,8 @@ func _can_see_player() -> bool:
 	return global_position.distance_to(player.global_position) < detection_radius
 
 func _pick_wander_target():
-	wander_target = global_position + Vector2(
-		randf_range(-200, 200),
-		randf_range(-200, 200)
+	wander_target = global_position + Vector3(
+		randf_range(-8, 8),
+		0,
+		randf_range(-8, 8)
 	)
