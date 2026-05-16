@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.4",
+	"Category": "",
+	"Description": "A narrative office horror game for the Bug game jam.",
+	"Modules": [
+		{
+			"Name": "BugBreak",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

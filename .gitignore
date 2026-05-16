@@ -1,5 +1,13 @@
-# Godot 4 .gitignore
-.godot/
-*.import
-export_presets.cfg
-*.translation
+# Unreal Engine 5
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vs/
+.vscode/
+*.VC.db
+*.sln
+*.suo
+*.user
+*.opensdf
+*.sdf
